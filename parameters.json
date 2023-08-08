@@ -65,7 +65,7 @@
             }
         },
         "securityType": {
-            "value": "TrustedLaunch"
+            "value": "Standard"
         },
         "secureBoot": {
             "value": true
