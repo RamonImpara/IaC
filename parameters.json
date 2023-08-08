@@ -178,12 +178,6 @@
         "vmAdministratorAccountPassword": {
             "value": null
         },
-        "adminUsername": {
-            "value": "impara"
-        },
-        "adminPassword": {
-            "value": null
-        },
         "managedDiskSecurityEncryptionType": {
             "value": "VMGuestStateOnly"
         },
