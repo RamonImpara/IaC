@@ -5,50 +5,66 @@
         "artifactsLocation": {
             "value": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_1.0.02404.172.zip"
         },
-        "intune": {
-            "value": true
+        "nestedTemplatesLocation": {
+            "value": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/armtemplates/Hostpool_1.0.02404.172/nestedTemplates/"
         },
         "hostpoolName": {
             "value": "AIB-DEV"
         },
-        "hostpoolDescription": {
-            "value": "Created through the Azure Virtual Desktop extension"
+        "hostpoolProperties": {
+            "value": {
+                "agentUpdate": null,
+                "friendlyName": null,
+                "description": "Created through the Azure Virtual Desktop extension",
+                "hostPoolType": "Pooled",
+                "personalDesktopAssignmentType": null,
+                "applicationGroupReferences": [
+                    "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourcegroups/RG-AVD-AIB-DEV/providers/Microsoft.DesktopVirtualization/applicationgroups/AIB-DEV-DAG"
+                ],
+                "customRdpProperty": "drivestoredirect:s:*;audiomode:i:0;videoplaybackmode:i:1;redirectclipboard:i:1;redirectprinters:i:1;devicestoredirect:s:*;redirectcomports:i:1;redirectsmartcards:i:1;usbdevicestoredirect:s:*;enablecredsspsupport:i:1;redirectwebauthn:i:1;use multimon:i:1;",
+                "maxSessionLimit": 5,
+                "loadBalancerType": "BreadthFirst",
+                "validationEnvironment": false,
+                "ring": null,
+                "registrationInfo": null,
+                "vmTemplate": "{\"domain\":\"\",\"galleryImageOffer\":null,\"galleryImagePublisher\":null,\"galleryImageSKU\":null,\"imageType\":\"CustomImage\",\"customImageId\":\"/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVDImageBuilder/providers/Microsoft.Compute/galleries/AVD_AIB_Gallery/images/win10avd/versions/1.0.0\",\"namePrefix\":\"AIB\",\"osDiskType\":\"StandardSSD_LRS\",\"vmSize\":{\"id\":\"Standard_B2s\",\"cores\":2,\"ram\":4,\"rdmaEnabled\":false,\"supportsMemoryPreservingMaintenance\":true},\"galleryItemId\":null,\"hibernate\":false,\"diskSizeGB\":0,\"securityType\":\"Standard\",\"secureBoot\":false,\"vTPM\":false}",
+                "preferredAppGroupType": "Desktop",
+                "migrationRequest": null,
+                "cloudPcResource": false,
+                "startVMOnConnect": false,
+                "ssoadfsAuthority": null,
+                "ssoClientId": null,
+                "ssoClientSecretKeyVaultPath": null,
+                "ssoSecretType": null,
+                "objectId": "d83f7c20-9a51-4196-ba6b-d0620bb5dedc"
+            }
         },
-        "location": {
+        "hostpoolResourceGroup": {
+            "value": "RG-AVD-AIB-DEV"
+        },
+        "hostpoolLocation": {
             "value": "westeurope"
         },
-        "validationEnvironment": {
-            "value": false
+        "hostpoolToken": {
+            "value": null
         },
-        "hostpoolType": {
-            "value": "Pooled"
-        },
-        "loadBalancerType": {
-            "value": "BreadthFirst"
-        },
-        "preferredAppGroupType": {
-            "value": "Desktop"
-        },
-        "publicNetworkAccess": {
-            "value": "Enabled"
+        "vmInitialNumber": {
+            "value": 0
         },
         "vmResourceGroup": {
             "value": "RG-AVD-AIB-DEV"
         },
-        "vmNamePrefix": {
-            "value": "AIB"
-        },
         "vmLocation": {
             "value": "westeurope"
         },
-        "vmImageType": {
-            "value": "CustomImage"
-        },
-        "vmSize": {
-            "value": "Standard_B2s"
+        "vmNamePrefix": {
+            "value": "AIB"
         },
         "vmNumberOfInstances": {
             "value": 1
+        },
+        "vmSize": {
+            "value": "Standard_B2s"
         },
         "vmDiskType": {
             "value": "StandardSSD_LRS"
@@ -59,19 +75,48 @@
         "vmHibernate": {
             "value": false
         },
-        "bootDiagnostics": {
-            "value": {
-                "enabled": true
-            }
+        "availabilityOption": {
+            "value": "AvailabilityZone"
+        },
+        "availabilitySetName": {
+            "value": ""
+        },
+        "createAvailabilitySet": {
+            "value": false
+        },
+        "availabilitySetUpdateDomainCount": {
+            "value": 5
+        },
+        "availabilitySetFaultDomainCount": {
+            "value": 2
+        },
+        "availabilityZones": {
+            "value": [
+                1
+            ]
         },
         "securityType": {
             "value": "Standard"
         },
         "secureBoot": {
-            "value": true
+            "value": false
         },
         "vTPM": {
-            "value": true
+            "value": false
+        },
+        "managedDiskSecurityEncryptionType": {
+            "value": "VMGuestStateOnly"
+        },
+        "integrityMonitoring": {
+            "value": false
+        },
+        "vmImageType": {
+            "value": "CustomImage"
+        },
+        "bootDiagnostics": {
+            "value": {
+                "enabled": false
+            }
         },
         "customConfigurationScriptUrl": {
             "value": ""
@@ -91,86 +136,20 @@
         "aadJoin": {
             "value": true
         },
+        "intune": {
+            "value": true
+        },
+        "administratorAccountUsername": {
+            "value": "impara"
+        },
+        "administratorAccountPassword": {
+            "value": null
+        },
         "domain": {
             "value": ""
         },
         "ouPath": {
             "value": ""
-        },
-        "addToWorkspace": {
-            "value": true
-        },
-        "virtualMachineTags": {
-            "value": {
-                "cm-resource-parent": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVD-AIB-DEV/providers/Microsoft.DesktopVirtualization/AIB-DEV"
-            }
-        },
-        "apiVersion": {
-            "value": "2022-10-14-preview"
-        },
-        "deploymentId": {
-            "value": "c631f453-7ce1-4a35-9495-1c3a545e70df"
-        },
-        "vmCustomImageSourceId": {
-            "value": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVDImageBuilder/providers/Microsoft.Compute/galleries/AVD_AIB_Gallery/images/win10avd/versions/1.0.0"
-        },
-        "maxSessionLimit": {
-            "value": 5
-        },
-        "workspaceResourceGroup": {
-            "value": "RG-AVD-AIB-DEV"
-        },
-        "workSpaceName": {
-            "value": "AVD-WS-AIB"
-        },
-        "workspaceLocation": {
-            "value": "westeurope"
-        },
-        "allApplicationGroupReferences": {
-            "value": ""
-        },
-        "isNewWorkspace": {
-            "value": false
-        },
-        "systemData": {
-            "value": {
-                "aadJoinPreview": false,
-                "sessionHostConfigurationVersion": "",
-                "firstPartyExtension": false
-            }
-        },
-        "nestedTemplatesLocation": {
-            "value": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/armtemplates/Hostpool_1.0.02404.172/nestedTemplates/"
-        },
-        "tokenExpirationTime": {
-            "value": "2023-08-30T09:50:20.403Z"
-        },
-        "vmTemplate": {
-            "value": "{\"domain\":\"\",\"galleryImageOffer\":null,\"galleryImagePublisher\":null,\"galleryImageSKU\":null,\"imageType\":\"CustomImage\",\"customImageId\":\"/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVDImageBuilder/providers/Microsoft.Compute/galleries/AVD_AIB_Gallery/images/win10avd/versions/1.0.0\",\"namePrefix\":\"AIB\",\"osDiskType\":\"StandardSSD_LRS\",\"vmSize\":{\"id\":\"Standard_B2s\",\"cores\":2,\"ram\":4,\"rdmaEnabled\":false,\"supportsMemoryPreservingMaintenance\":true},\"galleryItemId\":null,\"hibernate\":false,\"diskSizeGB\":0,\"securityType\":\"TrustedLaunch\",\"secureBoot\":true,\"vTPM\":true}"
-        },
-        "availabilityOption": {
-            "value": "AvailabilityZone"
-        },
-        "availabilitySetName": {
-            "value": ""
-        },
-        "createAvailabilitySet": {
-            "value": false
-        },
-        "availabilitySetUpdateDomainCount": {
-            "value": 5
-        },
-        "availabilitySetFaultDomainCount": {
-            "value": 2
-        },
-        "integrityMonitoring": {
-            "value": false
-        },
-        "availabilityZones": {
-            "value": [
-                1,
-                2
-            ]
         },
         "vmAdministratorAccountUsername": {
             "value": "impara"
@@ -178,30 +157,40 @@
         "vmAdministratorAccountPassword": {
             "value": null
         },
-        "managedDiskSecurityEncryptionType": {
-            "value": "VMGuestStateOnly"
-        },
-        "availabilitySetTags": {
-            "value": {
-                "cm-resource-parent": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVD-AIB-DEV/providers/Microsoft.DesktopVirtualization/AIB-DEV"
-            }
-        },
-        "applicationGroupTags": {
-            "value": {
-                "cm-resource-parent": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVD-AIB-DEV/providers/Microsoft.DesktopVirtualization/AIB-DEV"
-            }
-        },
-        "hostpoolTags": {
-            "value": {}
-        },
         "networkInterfaceTags": {
             "value": {
-                "cm-resource-parent": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVD-AIB-DEV/providers/Microsoft.DesktopVirtualization/AIB-DEV"
+                "cm-resource-parent": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourcegroups/RG-AVD-AIB-DEV/providers/Microsoft.DesktopVirtualization/hostpools/AIB-DEV"
             }
         },
         "networkSecurityGroupTags": {
             "value": {
-                "cm-resource-parent": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVD-AIB-DEV/providers/Microsoft.DesktopVirtualization/AIB-DEV"
+                "cm-resource-parent": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourcegroups/RG-AVD-AIB-DEV/providers/Microsoft.DesktopVirtualization/hostpools/AIB-DEV"
+            }
+        },
+        "availabilitySetTags": {
+            "value": {
+                "cm-resource-parent": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVD-AIB-DEV/providers/Microsoft.DesktopVirtualization/hostpools/AIB-DEV"
+            }
+        },
+        "virtualMachineTags": {
+            "value": {
+                "cm-resource-parent": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVD-AIB-DEV/providers/Microsoft.DesktopVirtualization/hostpools/AIB-DEV"
+            }
+        },
+        "deploymentId": {
+            "value": "b8ab991b-d3b7-41e0-8dff-9d80d7d0709a"
+        },
+        "apiVersion": {
+            "value": "2022-10-14-preview"
+        },
+        "vmCustomImageSourceId": {
+            "value": "/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVDImageBuilder/providers/Microsoft.Compute/galleries/AVD_AIB_Gallery/images/win10avd/versions/1.0.0"
+        },
+        "systemData": {
+            "value": {
+                "aadJoinPreview": false,
+                "sessionHostConfigurationVersion": "",
+                "firstPartyExtension": false
             }
         }
     }
