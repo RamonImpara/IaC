@@ -143,7 +143,7 @@
             "value": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/armtemplates/Hostpool_1.0.02404.172/nestedTemplates/"
         },
         "tokenExpirationTime": {
-            "value": "2023-08-09T09:50:20.403Z"
+            "value": "2023-08-30T09:50:20.403Z"
         },
         "vmTemplate": {
             "value": "{\"domain\":\"\",\"galleryImageOffer\":null,\"galleryImagePublisher\":null,\"galleryImageSKU\":null,\"imageType\":\"CustomImage\",\"customImageId\":\"/subscriptions/42c65bac-f696-472c-a1a3-6b3dc5d4d931/resourceGroups/RG-AVDImageBuilder/providers/Microsoft.Compute/galleries/AVD_AIB_Gallery/images/win10avd/versions/1.0.0\",\"namePrefix\":\"AIB\",\"osDiskType\":\"StandardSSD_LRS\",\"vmSize\":{\"id\":\"Standard_B2s\",\"cores\":2,\"ram\":4,\"rdmaEnabled\":false,\"supportsMemoryPreservingMaintenance\":true},\"galleryItemId\":null,\"hibernate\":false,\"diskSizeGB\":0,\"securityType\":\"TrustedLaunch\",\"secureBoot\":true,\"vTPM\":true}"
