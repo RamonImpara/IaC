@@ -16,7 +16,7 @@
     },
     "vmSize": {
       "type": "string",
-      "defaultValue": "Standard_DS2_v2",
+      "defaultValue": "Standard_B2S",
       "metadata": {
         "description": "Grootte van de virtuele machine"
       }
