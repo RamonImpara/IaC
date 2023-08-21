@@ -7,7 +7,7 @@
       "metadata": {
         "description": "Name of the host pool."
       }
-    }
+    },
     "virtualNetworkName": {
       "type": "string",
       "metadata": {
@@ -46,7 +46,7 @@
         "loadBalancerType": "BreadthFirst",
         "customRdpProperty": "audiomode:i:2;disable full window drag:i:1;",
         "ring": 0,
-        "preferredAppGroupType": "Desktop",
+        "preferredAppGroupType": "Desktop"
       }
     },
     {
