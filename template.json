@@ -8,6 +8,30 @@
         "description": "Name of the host pool."
       }
     }
+    "virtualNetworkName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the virtual network."
+      }
+    },
+    "addressPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address prefix for the virtual network."
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the subnet within the virtual network."
+      }
+    },
+    "subnetPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Address prefix for the subnet."
+      }
+    }
   },
   "resources": [
     {
@@ -23,6 +47,27 @@
         "customRdpProperty": "audiomode:i:2;disable full window drag:i:1;",
         "ring": 0,
         "preferredAppGroupType": "Desktop",
+      }
+    },
+    {
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2022-02-01",
+      "name": "[parameters('virtualNetworkName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[parameters('addressPrefix')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('subnetName')]",
+            "properties": {
+              "addressPrefix": "[parameters('subnetPrefix')]"
+            }
+          }
+        ]
       }
     }
   ]
