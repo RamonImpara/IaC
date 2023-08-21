@@ -17,7 +17,6 @@
       "location": "[resourceGroup().location]",
       "properties": {
         "friendlyName": "My Host Pool",
-        "validationEnvironment": "true",
         "hostPoolType": "Pooled",
         "maxSessionLimit": 10,
         "loadBalancerType": "BreadthFirst",
