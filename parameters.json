@@ -4,9 +4,6 @@
   "parameters": {
     "hostPoolName": {
       "value": "DEV-AIB-HP"
-    },
-    "appGroupName": {
-      "value": "DEV-AIB-AG"
     }
   }
 }
