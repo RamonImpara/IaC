@@ -4,6 +4,18 @@
   "parameters": {
     "hostPoolName": {
       "value": "DEV-AIB-HP"
+    },
+    "virtualNetworkName": {
+      "value": "VNET-AVD-DEV"
+    },
+    "addressPrefix": {
+      "value": "10.0.0.0/16"
+    },
+    "subnetName": {
+      "value": "Default"
+    },
+    "subnetName": {
+      "value": "10.0.0.0/24"
     }
   }
 }
