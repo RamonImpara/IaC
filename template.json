@@ -12,7 +12,7 @@
   "resources": [
     {
       "type": "Microsoft.DesktopVirtualization/hostPools",
-      "apiVersion": "2021-03-01",
+      "apiVersion": "2022-09-09",
       "name": "[parameters('hostPoolName')]",
       "location": "[resourceGroup().location]",
       "properties": {
