@@ -2,76 +2,32 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "adminUsername": {
+    "hostPoolName": {
       "type": "string",
       "metadata": {
-        "description": "Gebruikersnaam voor de beheerder"
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Wachtwoord voor de beheerder"
-      }
-    },
-    "vmSize": {
-      "type": "string",
-      "defaultValue": "Standard_B2S",
-      "metadata": {
-        "description": "Grootte van de virtuele machine"
+        "description": "Name of the host pool."
       }
     }
   },
   "resources": [
     {
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2023-05-01",
-      "name": "myVM",
+      "type": "Microsoft.DesktopVirtualization/hostPools",
+      "apiVersion": "2021-03-01",
+      "name": "[parameters('hostPoolName')]",
       "location": "[resourceGroup().location]",
       "properties": {
-        "hardwareProfile": {
-          "vmSize": "[parameters('vmSize')]"
-        },
-        "storageProfile": {
-          "osDisk": {
-            "createOption": "FromImage",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            }
-          }
-        },
-        "osProfile": {
-          "computerName": "myVM",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', 'myVMNic')]"
-            }
-          ]
+        "friendlyName": "My Host Pool",
+        "validationEnvironment": "true",
+        "hostPoolType": "Pooled",
+        "maxSessionLimit": 10,
+        "loadBalancerType": "BreadthFirst",
+        "customRdpProperty": "audiomode:i:2;disable full window drag:i:1;",
+        "ring": 0,
+        "preferredAppGroupType": "Desktop",
+        "validationEnvironment": {
+          "validationScriptPath": "https://example.com/validationScript.ps1"
         }
       }
-    },
-    {
-      "type": "Microsoft.Network/networkInterfaces",
-      "apiVersion": "2023-05-01",
-      "name": "myVMNic",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "subnet": {
-                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', 'VD-VNET', 'default')]"
-              }
-            }
-          }
-        ]
-      }
     }
-  ],
-  "outputs": {}
+  ]
 }
