@@ -23,9 +23,6 @@
         "customRdpProperty": "audiomode:i:2;disable full window drag:i:1;",
         "ring": 0,
         "preferredAppGroupType": "Desktop",
-        "validationEnvironment": {
-          "validationScriptPath": "https://example.com/validationScript.ps1"
-        }
       }
     }
   ]
