@@ -7,12 +7,6 @@
       "metadata": {
         "description": "Name of the host pool."
       }
-    },
-    "appGroupName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the application group."
-      }
     }
   },
   "resources": [
@@ -26,25 +20,10 @@
         "hostPoolType": "Pooled",
         "maxSessionLimit": 10,
         "loadBalancerType": "BreadthFirst",
+        "customRdpProperty": "audiomode:i:2;disable full window drag:i:1;",
         "ring": 0,
-        "preferredAppGroupType": "Desktop"
+        "preferredAppGroupType": "Desktop",
       }
-    },
-    {
-      "type": "Microsoft.DesktopVirtualization/applicationGroups",
-      "apiVersion": "2022-09-09",
-      "name": "[parameters('appGroupName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "friendlyName": "My App Group",
-        "applicationGroupType": "RemoteApp",
-        "hostPool": {
-          "id": "[resourceId('Microsoft.DesktopVirtualization/hostPools', parameters('hostPoolName'))]"
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.DesktopVirtualization/hostPools', parameters('hostPoolName'))]"
-      ]
     }
   ]
 }
