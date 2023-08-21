@@ -39,7 +39,7 @@
         "friendlyName": "My App Group",
         "applicationGroupType": "RemoteApp",
         "hostPool": {
-          "id": "[resourceId('Microsoft.DesktopVirtualization/hostPools', variable('hostPoolName'))]"
+          "id": "[resourceId('Microsoft.DesktopVirtualization/hostPools', parameters('hostPoolName'))]"
         }
       },
       "dependsOn": [
