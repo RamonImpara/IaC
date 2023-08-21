@@ -14,7 +14,7 @@
     "subnetName": {
       "value": "Default"
     },
-    "subnetName": {
+    "subnetPrefix": {
       "value": "10.0.0.0/24"
     }
   }
