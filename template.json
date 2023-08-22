@@ -82,7 +82,7 @@
         "userAssignmentType": "Direct",
         "remoteAppAppAlias": "notepad",
         "resourceReference": {
-          "id": "[resourceId('Microsoft.DesktopVirtualization/hostpools', [parameters('hostPoolName')])]"
+          "id": "[resourceId('Microsoft.DesktopVirtualization/hostPools', parameters('hostPoolName'))]"
         }
       }
     }
