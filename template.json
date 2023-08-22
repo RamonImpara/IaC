@@ -31,7 +31,13 @@
       "metadata": {
         "description": "Address prefix for the subnet."
       }
-    }
+    },
+    "applicationGroupName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the application group."
+      }
+    },
   },
   "resources": [
     {
@@ -73,7 +79,7 @@
     {
       "type": "Microsoft.DesktopVirtualization/applicationgroups",
       "apiVersion": "2022-09-09",
-      "name": "myAVDAppGroup",
+      "name": "[parameters('applicationGroupName')]",
       "location": "[resourceGroup().location]",
       "properties": {
         "hostpoolarmpath": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]",
