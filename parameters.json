@@ -19,6 +19,15 @@
     },
     "applicationGroupName": {
       "value": "AG-AVD-DEV"
+    },
+    "virtualMachineName": {
+      "value": "AIB-DEV-01"
+    },
+    "adminUsername": {
+      "value": "Impara"
+    },
+    "adminPassword": {
+      "value": "administrator##33"
     }
   }
 }
