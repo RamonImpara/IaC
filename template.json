@@ -38,6 +38,24 @@
         "description": "Name of the application group."
       }
     },
+    "virtualMachineName": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the virtual machine."
+      }
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "Name of the admin Username."
+      }
+    },
+    "adminPassword": {
+      "type": "string",
+      "metadata": {
+        "description": "Password of the local admin account"
+      }
+    },
   },
   "resources": [
     {
@@ -92,6 +110,55 @@
           "id": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]"
         }
       }
+    },
+    {
+      "type": "Microsoft.Compute/virtualMachines",
+      "apiVersion": "2022-03-01",
+      "name": "[parameters('virtualMachineName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "Standard_B2s"
+        },
+        "osProfile": {
+          "computerName": "[parameters('virtualMachineName')]",
+          "adminUsername": "[parameters('adminUsername')]",
+          "adminPassword": "[parameters('adminPassword')]"
+        }
+        "storageProfile": {
+          "imageReference": {
+            "id": "[resourceId('Microsoft.Compute/galleries/galleryImages/versions', 'AVD_AIB_Gallery', 'win10avd', '1.0.0')]"
+          }
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', parameters('virtualMachineName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Network/networkInterfaces",
+      "apiVersion": "2023-02-01",
+      "name": "[parameters('virtualMachineName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "subnet": {
+                "id": "[variables('subnetRef')]"
+              }
+            }
+          }
+        ]
+      }
     }
-  ]
+  ],
+  "variables": {
+    "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetPrefix'))]"
+  }
 }
