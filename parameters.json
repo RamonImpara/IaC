@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "hostPoolName": {
-      "value": "DEV-AIB-HP"
+      "value": "HP-AVD-DEV"
     },
     "virtualNetworkName": {
       "value": "VNET-AVD-DEV"
@@ -16,6 +16,9 @@
     },
     "subnetPrefix": {
       "value": "10.0.0.0/24"
+    },
+    "applicationGroupName": {
+      "value": "AG-AVD-DEV"
     }
   }
 }
