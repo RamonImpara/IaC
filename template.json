@@ -76,13 +76,14 @@
       "name": "myAVDAppGroup",
       "location": "[resourceGroup().location]",
       "properties": {
+        "hostpoolarmpath": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]",
         "friendlyName": "My AVD Application Group",
         "applicationGroupType": "RemoteApp",
         "description": "My AVD Application Group description",
         "userAssignmentType": "Direct",
         "remoteAppAppAlias": "notepad",
         "resourceReference": {
-          "id": "[resourceId('Microsoft.DesktopVirtualization/hostPools', parameters('hostPoolName'))]"
+          "id": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]"
         }
       }
     }
