@@ -126,14 +126,14 @@
           "adminPassword": "[parameters('adminPassword')]"
         },
         "storageProfile": {
+          "imageReference": {
+            "id": "[resourceId('Microsoft.Compute/galleries/galleryImages/versions', 'AVD_AIB_Gallery', 'win10avd', '1.0.0')]"
+          },
           "osDisk": {
             "createOption": "FromImage",
             "osType": "Windows",
             "managedDisk": {
               "storageAccountType": "Standard_LRS"
-            },
-            "image": {
-              "id": "[resourceId('Microsoft.Compute/galleries/galleryImages/versions', 'AVD_AIB_Gallery', 'win10avd', '1.0.0')]"
             }
           }
         },
