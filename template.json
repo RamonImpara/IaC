@@ -127,7 +127,7 @@
         },
         "storageProfile": {
           "imageReference": {
-            "id": "[resourceId('Microsoft.Compute/galleries/galleryImages/versions', 'AVD_AIB_Gallery', 'win10avd', '1.0.0')]"
+            "id": "[resourceId('Microsoft.Compute/galleries/images/versions', 'AVD_AIB_Gallery', 'win10avd', '1.0.0')]"
           },
           "osDisk": {
             "createOption": "FromImage",
