@@ -85,33 +85,6 @@
           "id": "[resourceId('Microsoft.DesktopVirtualization/hostpools', [parameters('hostPoolName')])]"
         }
       }
-    },
-    {
-      "type": "Microsoft.DesktopVirtualization/hostpools",
-      "apiVersion": "2022-09-09",
-      "name": "[parameters('hostPoolName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "friendlyName": "My AVD Host Pool",
-        "hostPoolType": "Pooled",
-        "loadBalancerType": "BreadthFirst",
-        "maxSessionLimit": 10,
-        "ring": 0,
-        "validationEnvironment": false,
-        "customRdpProperty": "",
-        "applicationGroupReferences": [],
-        "vmTemplate": {
-          "type": "personal",
-          "imageVersion": "latest",
-          "customRdpProperty": ""
-        }
-      }
     }
-  ],
-    "outputs": {
-    "hostPoolResourceId": {
-      "type": "string",
-      "value": "[resourceId('Microsoft.DesktopVirtualization/hostpools', [parameters('hostPoolName')])]"
-    }
-  }
+  ]
 }
