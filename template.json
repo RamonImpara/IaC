@@ -1,177 +1,184 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "hostPoolName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the host pool."
-      }
-    },
-    "virtualNetworkName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the virtual network."
-      }
-    },
-    "addressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Address prefix for the virtual network."
-      }
-    },
-    "subnetName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the subnet within the virtual network."
-      }
-    },
-    "subnetPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Address prefix for the subnet."
-      }
-    },
-    "applicationGroupName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the application group."
-      }
-    },
-    "virtualMachineName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the virtual machine."
-      }
-    },
-    "adminUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the admin Username."
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password of the local admin account"
-      }
-    },
-  },
-  "resources": [
-    {
-      "type": "Microsoft.DesktopVirtualization/hostPools",
-      "apiVersion": "2022-09-09",
-      "name": "[parameters('hostPoolName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "friendlyName": "My Host Pool",
-        "hostPoolType": "Pooled",
-        "maxSessionLimit": 10,
-        "loadBalancerType": "BreadthFirst",
-        "customRdpProperty": "audiomode:i:2;disable full window drag:i:1;",
-        "ring": 0,
-        "preferredAppGroupType": "Desktop"
-      }
-    },
-    {
-      "type": "Microsoft.Network/virtualNetworks",
-      "apiVersion": "2022-11-01",
-      "name": "[parameters('virtualNetworkName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "addressSpace": {
-          "addressPrefixes": [
-            "[parameters('addressPrefix')]"
-          ]
-        },
-        "subnets": [
-          {
-            "name": "[parameters('subnetName')]",
-            "properties": {
-              "addressPrefix": "[parameters('subnetPrefix')]"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.DesktopVirtualization/applicationgroups",
-      "apiVersion": "2022-09-09",
-      "name": "[parameters('applicationGroupName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "hostpoolarmpath": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]",
-        "friendlyName": "My AVD Application Group",
-        "applicationGroupType": "RemoteApp",
-        "description": "My AVD Application Group description",
-        "userAssignmentType": "Direct",
-        "remoteAppAppAlias": "notepad",
-        "resourceReference": {
-          "id": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]"
-        }
-      }
-    },
-    {
-      "type": "Microsoft.Network/networkInterfaces",
-      "apiVersion": "2023-02-01",
-      "name": "[concat(parameters('virtualMachineName'), '-NIC')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "subnet": {
-                "id": "[variables('subnetRef')]"
-              }
-            }
-          }
-        ]
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
-      ]
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2022-03-01",
-      "name": "[parameters('virtualMachineName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "Standard_B2s"
-        },
-        "osProfile": {
-          "computerName": "[parameters('virtualMachineName')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "id": "[resourceId('Microsoft.Compute/galleries/images/versions', 'AVD_AIB_Gallery', 'win10avd', '1.0.0')]"
-          },
-          "osDisk": {
-            "createOption": "FromImage",
-            "osType": "Windows",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            }
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-NIC'))]"
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-NIC'))]"
-      ]
-    }
-  ],
-  "variables": {
-    "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
-  }
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"hostPoolName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the host pool."
+			}
+		},
+		"virtualNetworkName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the virtual network."
+			}
+		},
+		"addressPrefix": {
+			"type": "string",
+			"metadata": {
+				"description": "Address prefix for the virtual network."
+			}
+		},
+		"subnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the subnet within the virtual network."
+			}
+		},
+		"subnetPrefix": {
+			"type": "string",
+			"metadata": {
+				"description": "Address prefix for the subnet."
+			}
+		},
+		"applicationGroupName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the application group."
+			}
+		},
+		"virtualMachineName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the virtual machine."
+			}
+		},
+		"adminUsername": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the admin Username."
+			}
+		},
+		"adminPassword": {
+			"type": "securestring",
+			"metadata": {
+				"description": "Password of the local admin account"
+			}
+		}
+	},
+	"resources": [
+		{
+			"type": "Microsoft.DesktopVirtualization/hostPools",
+			"apiVersion": "2022-09-09",
+			"name": "[parameters('hostPoolName')]",
+			"location": "[resourceGroup().location]",
+			"properties": {
+				"friendlyName": "My Host Pool",
+				"hostPoolType": "Pooled",
+				"maxSessionLimit": 10,
+				"loadBalancerType": "BreadthFirst",
+				"customRdpProperty": "audiomode:i:2;disable full window drag:i:1;",
+				"ring": 0,
+				"preferredAppGroupType": "Desktop"
+			},
+			"resources": [
+				{
+					"type": "Microsoft.Compute/virtualMachines",
+					"apiVersion": "2022-03-01",
+					"name": "[parameters('virtualMachineName')]",
+					"location": "[resourceGroup().location]",
+					"properties": {
+						"hardwareProfile": {
+							"vmSize": "Standard_B2s"
+						},
+						"osProfile": {
+							"computerName": "[parameters('virtualMachineName')]",
+							"adminUsername": "[parameters('adminUsername')]",
+							"adminPassword": "[parameters('adminPassword')]"
+						},
+						"storageProfile": {
+							"imageReference": {
+								"id": "[resourceId('Microsoft.Compute/galleries/images/versions', 'AVD_AIB_Gallery', 'win10avd', '1.0.0')]"
+							},
+							"osDisk": {
+								"createOption": "FromImage",
+								"osType": "Windows",
+								"managedDisk": {
+									"storageAccountType": "Standard_LRS"
+								}
+							}
+						},
+						"networkProfile": {
+							"networkInterfaces": [
+								{
+									"id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-NIC'))]"
+								}
+							]
+						}
+					},
+					"resources": [
+						{
+							"type": "Microsoft.Network/networkInterfaces",
+							"apiVersion": "2023-02-01",
+							"name": "[concat(parameters('virtualMachineName'), '-NIC')]",
+							"location": "[resourceGroup().location]",
+							"properties": {
+								"ipConfigurations": [
+									{
+										"name": "ipconfig1",
+										"properties": {
+											"subnet": {
+												"id": "[variables('subnetRef')]"
+											}
+										}
+									}
+								]
+							},
+							"dependsOn": [
+								"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
+							]
+						}
+					],
+					"dependsOn": [
+						"[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-NIC'))]"
+					]
+				}
+			]
+		},
+		{
+			"type": "Microsoft.Network/virtualNetworks",
+			"apiVersion": "2022-11-01",
+			"name": "[parameters('virtualNetworkName')]",
+			"location": "[resourceGroup().location]",
+			"properties": {
+				"addressSpace": {
+					"addressPrefixes": [
+						"[parameters('addressPrefix')]"
+					]
+				},
+				"subnets": [
+					{
+						"name": "[parameters('subnetName')]",
+						"properties": {
+							"addressPrefix": "[parameters('subnetPrefix')]"
+						}
+					}
+				]
+			}
+		},
+		{
+			"type": "Microsoft.DesktopVirtualization/applicationgroups",
+			"apiVersion": "2022-09-09",
+			"name": "[parameters('applicationGroupName')]",
+			"location": "[resourceGroup().location]",
+			"properties": {
+				"hostpoolarmpath": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]",
+				"friendlyName": "My AVD Application Group",
+				"applicationGroupType": "RemoteApp",
+				"description": "My AVD Application Group description",
+				"userAssignmentType": "Direct",
+				"remoteAppAppAlias": "notepad",
+				"resourceReference": {
+					"id": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]"
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.DesktopVirtualization/hostPools', parameters('hostPoolName'))]"
+			]
+		}
+	],
+	"variables": {
+		"subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
+	}
 }
