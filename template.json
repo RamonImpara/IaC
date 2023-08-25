@@ -78,6 +78,9 @@
 					"apiVersion": "2022-03-01",
 					"name": "[parameters('virtualMachineName')]",
 					"location": "[resourceGroup().location]",
+					"depends on": [
+						"[resourceId('Microsoft.DesktopVirtualization/hostPools', parameters('hostPoolName'))]"
+					],
 					"properties": {
 						"hardwareProfile": {
 							"vmSize": "Standard_B2s"
@@ -124,8 +127,14 @@
 										}
 									}
 								]
-							}
+							},
+							"dependsOn": [
+								"[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
+							]
 						}
+					],
+					"dependsOn": [
+						"[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-NIC'))]"
 					]
 				}
 			]
