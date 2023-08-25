@@ -1,137 +1,139 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-  "contentVersion": "1.0.0.0",
-  "parameters": {
-    "hostPoolName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the host pool."
-      }
-    },
-    "virtualNetworkName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the virtual network."
-      }
-    },
-    "addressPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Address prefix for the virtual network."
-      }
-    },
-    "subnetName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the subnet within the virtual network."
-      }
-    },
-    "subnetPrefix": {
-      "type": "string",
-      "metadata": {
-        "description": "Address prefix for the subnet."
-      }
-    },
-    "applicationGroupName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the application group."
-      }
-    },
-    "virtualMachineName": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the virtual machine."
-      }
-    },
-    "adminUsername": {
-      "type": "string",
-      "metadata": {
-        "description": "Name of the admin Username."
-      }
-    },
-    "adminPassword": {
-      "type": "securestring",
-      "metadata": {
-        "description": "Password of the local admin account"
-      }
-    },
-  },
-  "resources": [
-{
-      "type": "Microsoft.Network/networkInterfaces",
-      "apiVersion": "2023-02-01",
-      "name": "[concat(parameters('virtualMachineName'), '-NIC')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "ipConfigurations": [
-          {
-            "name": "ipconfig1",
-            "properties": {
-              "subnet": {
-                "id": "[variables('subnetRef')]"
-              }
-            }
-          }
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.Compute/virtualMachines",
-      "apiVersion": "2022-03-01",
-      "name": "[parameters('virtualMachineName')]",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "hardwareProfile": {
-          "vmSize": "Standard_B2s"
-        },
-        "osProfile": {
-          "computerName": "[parameters('virtualMachineName')]",
-          "adminUsername": "[parameters('adminUsername')]",
-          "adminPassword": "[parameters('adminPassword')]"
-        },
-        "storageProfile": {
-          "imageReference": {
-            "id": "[resourceId('Microsoft.Compute/galleries/images/versions', 'AVD_AIB_Gallery', 'win10avd', '1.0.0')]"
-          },
-          "osDisk": {
-            "createOption": "FromImage",
-            "osType": "Windows",
-            "managedDisk": {
-              "storageAccountType": "Standard_LRS"
-            }
-          }
-        },
-        "networkProfile": {
-          "networkInterfaces": [
-            {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-NIC'))]"
-            }
-          ]
-        }
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-NIC'))]"
-      ]
-    },
-    {
-        "apiVersion": "2021-03-01",
-        "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(parameters('virtualMachineName'), '/customScript')]",
-        "location": "[resourceGroup().location]",
-        "properties": {
-            "publisher": "Microsoft.Compute",
-            "type": "CustomScriptExtension",
-            "typeHandlerVersion": "1.10",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-                "script": "[concat('https://raw.githubusercontent.com/RamonImpara/IaC/main/Add-WVDHostToHostpoolSpringV7.ps1')]",
-                "arguments": "[concat(' eyJhbGciOiJSUzI1NiIsImtpZCI6IjQ4Q0Y2MjhENTM5OUYzNTMwQkM5MzI0RjgyMzVFNEY1RkEyOTQxNkIiLCJ0eXAiOiJKV1QifQ.eyJSZWdpc3RyYXRpb25JZCI6ImVhZDk4OWZlLWIyYWYtNGFjZS05NjUwLTZhNjAyZTU4MTU5NiIsIkJyb2tlclVyaSI6Imh0dHBzOi8vcmRicm9rZXItZy1ldS1yMC53dmQubWljcm9zb2Z0LmNvbS8iLCJEaWFnbm9zdGljc1VyaSI6Imh0dHBzOi8vcmRkaWFnbm9zdGljcy1nLWV1LXIwLnd2ZC5taWNyb3NvZnQuY29tLyIsIkVuZHBvaW50UG9vbElkIjoiZTcyNzQxMzctNDNjOC00MzgwLTgxMjAtNjI2ZTExMGFmMGJkIiwiR2xvYmFsQnJva2VyVXJpIjoiaHR0cHM6Ly9yZGJyb2tlci53dmQubWljcm9zb2Z0LmNvbS8iLCJHZW9ncmFwaHkiOiJFVSIsIkdsb2JhbEJyb2tlclJlc291cmNlSWRVcmkiOiJodHRwczovL2U3Mjc0MTM3LTQzYzgtNDM4MC04MTIwLTYyNmUxMTBhZjBiZC5yZGJyb2tlci53dmQubWljcm9zb2Z0LmNvbS8iLCJCcm9rZXJSZXNvdXJjZUlkVXJpIjoiaHR0cHM6Ly9lNzI3NDEzNy00M2M4LTQzODAtODEyMC02MjZlMTEwYWYwYmQucmRicm9rZXItZy1ldS1yMC53dmQubWljcm9zb2Z0LmNvbS8iLCJEaWFnbm9zdGljc1Jlc291cmNlSWRVcmkiOiJodHRwczovL2U3Mjc0MTM3LTQzYzgtNDM4MC04MTIwLTYyNmUxMTBhZjBiZC5yZGRpYWdub3N0aWNzLWctZXUtcjAud3ZkLm1pY3Jvc29mdC5jb20vIiwiQUFEVGVuYW50SWQiOiI5M2EzNzU5My00OTliLTQxNTctOGI3Zi02YzVkZGY5MjM5OWUiLCJuYmYiOjE2OTI5Njc2ODcsImV4cCI6MTY5NTI0NzIwMCwiaXNzIjoiUkRJbmZyYVRva2VuTWFuYWdlciIsImF1ZCI6IlJEbWkifQ.T7o1AALhZfcqEq_FdIA5j0meJFCuLCn1RnSeWcnkc2bVkH-_wksCb4IP24FaS2rzXoUhbLkrmkY875zYfGat2vpQuh2rq6MnlcPhjMWxuRMNaXX1oDaXp6tHi_qg3LVTg_4Aw5lxTdNJW-3azwGziM42Y99Q2m-v5ZVQIqBmhx3QGP2gOE82XpZ4zrkFYai4GdpdWBQ2NQni-Inl6VG8COvZr4HyvfCqrMcqi84rxN8EL5hOr6_XAR6ISHEzw0NFtwDs6nf5tFW2o6HlC9GliKhedoRCHePg2PukWp_dsxhedRzpqOCjxBfnbvQuDY8rMJtl5uE2DuGJ1lsHUi15Ig')]"
-            }
-        }
-    }
-  ],
-  "variables": {
-    "subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
-  }
+	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"hostPoolName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the host pool."
+			}
+		},
+		"virtualNetworkName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the virtual network."
+			}
+		},
+		"addressPrefix": {
+			"type": "string",
+			"metadata": {
+				"description": "Address prefix for the virtual network."
+			}
+		},
+		"subnetName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the subnet within the virtual network."
+			}
+		},
+		"subnetPrefix": {
+			"type": "string",
+			"metadata": {
+				"description": "Address prefix for the subnet."
+			}
+		},
+		"applicationGroupName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the application group."
+			}
+		},
+		"virtualMachineName": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the virtual machine."
+			}
+		},
+		"adminUsername": {
+			"type": "string",
+			"metadata": {
+				"description": "Name of the admin Username."
+			}
+		},
+		"adminPassword": {
+			"type": "securestring",
+			"metadata": {
+				"description": "Password of the local admin account"
+			}
+		}
+	},
+	"resources": [
+		{
+			"type": "Microsoft.Network/networkInterfaces",
+			"apiVersion": "2023-02-01",
+			"name": "[concat(parameters('virtualMachineName'), '-NIC')]",
+			"location": "[resourceGroup().location]",
+			"properties": {
+				"ipConfigurations": [
+					{
+						"name": "ipconfig1",
+						"properties": {
+							"subnet": {
+								"id": "[variables('subnetRef')]"
+							}
+						}
+					}
+				]
+			}
+		},
+		{
+			"type": "Microsoft.Compute/virtualMachines",
+			"apiVersion": "2022-03-01",
+			"name": "[parameters('virtualMachineName')]",
+			"location": "[resourceGroup().location]",
+			"properties": {
+				"hardwareProfile": {
+					"vmSize": "Standard_B2s"
+				},
+				"osProfile": {
+					"computerName": "[parameters('virtualMachineName')]",
+					"adminUsername": "[parameters('adminUsername')]",
+					"adminPassword": "[parameters('adminPassword')]"
+				},
+				"storageProfile": {
+					"imageReference": {
+						"id": "[resourceId('Microsoft.Compute/galleries/images/versions', 'AVD_AIB_Gallery', 'win10avd', '1.0.0')]"
+					},
+					"osDisk": {
+						"createOption": "FromImage",
+						"osType": "Windows",
+						"managedDisk": {
+							"storageAccountType": "Standard_LRS"
+						}
+					}
+				},
+				"networkProfile": {
+					"networkInterfaces": [
+						{
+							"id": "[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-NIC'))]"
+						}
+					]
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Network/networkInterfaces', concat(parameters('virtualMachineName'), '-NIC'))]"
+			]
+		},
+		{
+			"apiVersion": "2021-03-01",
+			"type": "Microsoft.Compute/virtualMachines/extensions",
+			"name": "[concat(parameters('virtualMachineName'), '/customScript')]",
+			"location": "[resourceGroup().location]",
+			"properties": {
+				"publisher": "Microsoft.Compute",
+				"type": "CustomScriptExtension",
+				"typeHandlerVersion": "1.10",
+				"autoUpgradeMinorVersion": true,
+				"settings": {
+					"script": "[concat('https://raw.githubusercontent.com/RamonImpara/IaC/main/Add-WVDHostToHostpoolSpringV7.ps1')]"
+				},
+				"protectedSettings": {
+					"commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File Add-WVDHostToHostpoolSpringV7.ps1 eyJhbGciOiJSUzI1NiIsImtpZCI6IjQ4Q0Y2MjhENTM5OUYzNTMwQkM5MzI0RjgyMzVFNEY1RkEyOTQxNkIiLCJ0eXAiOiJKV1QifQ.eyJSZWdpc3RyYXRpb25JZCI6ImVhZDk4OWZlLWIyYWYtNGFjZS05NjUwLTZhNjAyZTU4MTU5NiIsIkJyb2tlclVyaSI6Imh0dHBzOi8vcmRicm9rZXItZy1ldS1yMC53dmQubWljcm9zb2Z0LmNvbS8iLCJEaWFnbm9zdGljc1VyaSI6Imh0dHBzOi8vcmRkaWFnbm9zdGljcy1nLWV1LXIwLnd2ZC5taWNyb3NvZnQuY29tLyIsIkVuZHBvaW50UG9vbElkIjoiZTcyNzQxMzctNDNjOC00MzgwLTgxMjAtNjI2ZTExMGFmMGJkIiwiR2xvYmFsQnJva2VyVXJpIjoiaHR0cHM6Ly9yZGJyb2tlci53dmQubWljcm9zb2Z0LmNvbS8iLCJHZW9ncmFwaHkiOiJFVSIsIkdsb2JhbEJyb2tlclJlc291cmNlSWRVcmkiOiJodHRwczovL2U3Mjc0MTM3LTQzYzgtNDM4MC04MTIwLTYyNmUxMTBhZjBiZC5yZGJyb2tlci53dmQubWljcm9zb2Z0LmNvbS8iLCJCcm9rZXJSZXNvdXJjZUlkVXJpIjoiaHR0cHM6Ly9lNzI3NDEzNy00M2M4LTQzODAtODEyMC02MjZlMTEwYWYwYmQucmRicm9rZXItZy1ldS1yMC53dmQubWljcm9zb2Z0LmNvbS8iLCJEaWFnbm9zdGljc1Jlc291cmNlSWRVcmkiOiJodHRwczovL2U3Mjc0MTM3LTQzYzgtNDM4MC04MTIwLTYyNmUxMTBhZjBiZC5yZGRpYWdub3N0aWNzLWctZXUtcjAud3ZkLm1pY3Jvc29mdC5jb20vIiwiQUFEVGVuYW50SWQiOiI5M2EzNzU5My00OTliLTQxNTctOGI3Zi02YzVkZGY5MjM5OWUiLCJuYmYiOjE2OTI5Njc2ODcsImV4cCI6MTY5NTI0NzIwMCwiaXNzIjoiUkRJbmZyYVRva2VuTWFuYWdlciIsImF1ZCI6IlJEbWkifQ.T7o1AALhZfcqEq_FdIA5j0meJFCuLCn1RnSeWcnkc2bVkH-_wksCb4IP24FaS2rzXoUhbLkrmkY875zYfGat2vpQuh2rq6MnlcPhjMWxuRMNaXX1oDaXp6tHi_qg3LVTg_4Aw5lxTdNJW-3azwGziM42Y99Q2m-v5ZVQIqBmhx3QGP2gOE82XpZ4zrkFYai4GdpdWBQ2NQni-Inl6VG8COvZr4HyvfCqrMcqi84rxN8EL5hOr6_XAR6ISHEzw0NFtwDs6nf5tFW2o6HlC9GliKhedoRCHePg2PukWp_dsxhedRzpqOCjxBfnbvQuDY8rMJtl5uE2DuGJ1lsHUi15Ig"
+				}
+			}
+		}
+	],
+	"variables": {
+		"subnetRef": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), parameters('subnetName'))]"
+	}
 }
