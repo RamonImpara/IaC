@@ -109,7 +109,10 @@
         "resourceReference": {
           "id": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostPoolName'))]"
         }
-      }
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]"
+      ]
     }
   ],
   "variables": {
