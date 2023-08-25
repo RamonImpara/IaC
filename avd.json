@@ -120,7 +120,7 @@
     {
         "apiVersion": "2021-03-01",
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(parameters('vmName'), '/customScript')]",
+        "name": "[concat(parameters('virtualMachineName'), '/customScript')]",
         "location": "[parameters('location')]",
         "properties": {
             "publisher": "Microsoft.Compute",
